@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4CA0C98F12B23B1300EC494F /* ASIOauthRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0C98C12B23B1300EC494F /* ASIOauthRequest.m */; };
+		4CA0C99012B23B1300EC494F /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0C98E12B23B1300EC494F /* NSData+Base64.m */; };
+		4CA0C9B212B23C5C00EC494F /* ASIOauthRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 4CA0C9B112B23C5C00EC494F /* ASIOauthRequestTest.m */; };
+		4CA0CAC412B2609A00EC494F /* ASIOauthRequestTestParameters.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4CA0CAC312B2609A00EC494F /* ASIOauthRequestTestParameters.plist */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B502441B1025D36B002B13E1 /* ProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B502441A1025D36B002B13E1 /* ProxyTests.m */; };
 		B50C17DB121C254D0055FCAB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B50C17DA121C254D0055FCAB /* Security.framework */; };
@@ -106,6 +110,13 @@
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		4CA0C98B12B23B1300EC494F /* ASIOauthRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIOauthRequest.h; sourceTree = "<group>"; };
+		4CA0C98C12B23B1300EC494F /* ASIOauthRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIOauthRequest.m; sourceTree = "<group>"; };
+		4CA0C98D12B23B1300EC494F /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		4CA0C98E12B23B1300EC494F /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		4CA0C9B012B23C5C00EC494F /* ASIOauthRequestTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIOauthRequestTest.h; sourceTree = "<group>"; };
+		4CA0C9B112B23C5C00EC494F /* ASIOauthRequestTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIOauthRequestTest.m; sourceTree = "<group>"; };
+		4CA0CAC312B2609A00EC494F /* ASIOauthRequestTestParameters.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ASIOauthRequestTestParameters.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B50244191025D36B002B13E1 /* ProxyTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyTests.h; sourceTree = "<group>"; };
 		B502441A1025D36B002B13E1 /* ProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProxyTests.m; sourceTree = "<group>"; };
@@ -293,6 +304,7 @@
 				B55B5E760F7656DF0064029C /* InfoPlist.strings */,
 				B55B5E730F7656DA0064029C /* MainMenu.xib */,
 				B55B5E710F7656C60064029C /* Info.plist */,
+				4CA0CAC312B2609A00EC494F /* ASIOauthRequestTestParameters.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -304,6 +316,17 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4CA0C98A12B23A7300EC494F /* OAuth */ = {
+			isa = PBXGroup;
+			children = (
+				4CA0C98B12B23B1300EC494F /* ASIOauthRequest.h */,
+				4CA0C98C12B23B1300EC494F /* ASIOauthRequest.m */,
+				4CA0C98D12B23B1300EC494F /* NSData+Base64.h */,
+				4CA0C98E12B23B1300EC494F /* NSData+Base64.m */,
+			);
+			name = OAuth;
 			sourceTree = "<group>";
 		};
 		B51E61A2100BA84C004A300D /* S3 */ = {
@@ -357,6 +380,7 @@
 				B53E628D1255EE4B00C1E79A /* ASIDataDecompressor.m */,
 				B54B23F412AA7D8300A7F940 /* ASIWebPageRequest */,
 				B5873F8F10FF2890001E145F /* CloudFiles */,
+				4CA0C98A12B23A7300EC494F /* OAuth */,
 				B51E61A2100BA84C004A300D /* S3 */,
 				B55B5D190F76568E0064029C /* Tests */,
 			);
@@ -389,6 +413,8 @@
 				B502441A1025D36B002B13E1 /* ProxyTests.m */,
 				B52D4A3010DA4EE0008E8365 /* PerformanceTests.h */,
 				B52D4A3110DA4EE0008E8365 /* PerformanceTests.m */,
+				4CA0C9B012B23C5C00EC494F /* ASIOauthRequestTest.h */,
+				4CA0C9B112B23C5C00EC494F /* ASIOauthRequestTest.m */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -527,6 +553,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4CA0CAC412B2609A00EC494F /* ASIOauthRequestTestParameters.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -616,6 +643,9 @@
 				B53E628F1255EE4B00C1E79A /* ASIDataDecompressor.m in Sources */,
 				B53E62EF1255F73300C1E79A /* ASIDataCompressorTests.m in Sources */,
 				B54B23FA12AA7D9100A7F940 /* ASIWebPageRequest.m in Sources */,
+				4CA0C98F12B23B1300EC494F /* ASIOauthRequest.m in Sources */,
+				4CA0C99012B23B1300EC494F /* NSData+Base64.m in Sources */,
+				4CA0C9B212B23C5C00EC494F /* ASIOauthRequestTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
