@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>kServiceURL</key>
+	<string></string>
+	<key>kConsumerKey</key>
+	<string></string>
+	<key>kConsumerSecret</key>
+	<string></string>
+	<key>kServiceAPIPath</key>
+	<string></string>
+	<key>kServiceAPIParams</key>
+	<dict/>
+</dict>
 </plist>

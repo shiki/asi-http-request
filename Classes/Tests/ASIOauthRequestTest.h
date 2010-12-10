@@ -10,6 +10,9 @@
 
 @interface ASIOauthRequestTest : ASITestCase 
 {
+	// load the test parameters from a plist, as it's tidier + allows dicts/arrays
+	NSDictionary *testParameters;
+	
 	NSString *accessTokenKey;
 	NSString *accessTokenSecret;
 }

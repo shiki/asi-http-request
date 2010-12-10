@@ -83,7 +83,35 @@
 	NSString *normalised_url = [NSString stringWithFormat: @"%@://%@%@%@%@", [url scheme], [url host], 
 								portString, [url path], trailingSlash];
 	
-	NSMutableArray *keys = [NSMutableArray arrayWithArray: [headerInfo allKeys]];
+	// we need post/get params in here too
+	NSMutableDictionary *fullParams = [NSMutableDictionary dictionaryWithDictionary: headerInfo];
+	
+	// POST params are easy
+	for (NSDictionary *data in postData)
+	{
+		[fullParams setObject: [data objectForKey: @"value"]
+					   forKey: [data objectForKey: @"key"]];
+	}
+	
+	// GET params are less so - need to manually pull them out the URL
+	NSString *query = [url query];
+	NSArray *pairs = [query componentsSeparatedByString: @"&"];
+		
+	for (NSString* pair in pairs)
+	{
+		NSArray* key_value_parts = [pair componentsSeparatedByString: @"="];
+		if (key_value_parts.count != 2)
+			continue;
+		
+		NSString *key = [key_value_parts objectAtIndex: 0];
+		NSString *value = [key_value_parts objectAtIndex: 1];
+		
+		[fullParams setObject: value
+					   forKey: key];
+	}
+
+	
+	NSMutableArray *keys = [NSMutableArray arrayWithArray: [fullParams allKeys]];
 	
 	[keys sortUsingSelector: @selector(compare:)];
 	
@@ -94,7 +122,7 @@
 		paramstr = [NSString stringWithFormat: @"%@%@%@=%@", paramstr, 
 					paramstr.length == 0? @"" : @"&",
 					[self encodeURL: key], 
-					[self encodeURL: [headerInfo objectForKey: key]]];
+					[self encodeURL: [fullParams objectForKey: key]]];
 	}
 	
 	// first add normalized http method, then the normalised url
@@ -197,7 +225,7 @@
 	{
 		self.consumerKey = key;
 		self.consumerSecret = secret;
-		self.signatureMethod = ASIPlaintextOAuthSignatureMethod;		
+		self.signatureMethod = ASIHMAC_SHA1OAuthSignatureMethod;		
 		
 		[self buildAuthorizationHeader];
 	}
@@ -264,6 +292,17 @@
 		else if ([key compare: @"oauth_token_secret"] == NSOrderedSame)
 			returnedTokenSecret = [value retain];
 	}
+}
+
+
+#pragma mark -
+#pragma mark Override ASI methods
+
+- (void)buildPostBody
+{	
+	[super buildPostBody];
+	
+	[self buildAuthorizationHeader];
 }
 
 
