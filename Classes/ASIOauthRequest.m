@@ -275,9 +275,6 @@
 	NSString *response = [self responseString];
 	NSArray *pairs = [response componentsSeparatedByString: @"&"];
 	
-	if (pairs.count != 2)
-		return;
-	
 	for (NSString* pair in pairs)
 	{
 		NSArray* key_value_parts = [pair componentsSeparatedByString: @"="];
@@ -291,6 +288,12 @@
 			returnedTokenKey = [value retain];
 		else if ([key compare: @"oauth_token_secret"] == NSOrderedSame)
 			returnedTokenSecret = [value retain];
+	}
+
+	// clear everything if oauth_token and/or oauth_token_secret were not parsed
+	if (!returnedTokenKey || !returnedTokenSecret) {
+		[returnedTokenKey release]; returnedTokenKey = nil;
+		[returnedTokenSecret release]; returnedTokenSecret = nil;
 	}
 }
 
