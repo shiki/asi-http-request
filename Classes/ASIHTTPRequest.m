@@ -24,7 +24,7 @@
 #import "ASIDataCompressor.h"
 
 // Automatically set on build
-NSString *ASIHTTPRequestVersion = @"v1.8-23 2010-12-10";
+NSString *ASIHTTPRequestVersion = @"v1.8-33 2011-01-06";
 
 NSString* const NetworkRequestErrorDomain = @"ASIHTTPRequestErrorDomain";
 
@@ -162,6 +162,8 @@ static NSOperationQueue *sharedQueue = nil;
 - (void)startRequest;
 - (void)updateStatus:(NSTimer *)timer;
 - (void)checkRequestStatus;
+- (void)reportFailure;
+- (void)reportFinished;
 - (void)markAsFinished;
 - (void)performRedirect;
 - (BOOL)shouldTimeOut;
@@ -331,6 +333,9 @@ static NSOperationQueue *sharedQueue = nil;
 		CFRelease(clientCertificateIdentity);
 	}
 	[self cancelLoad];
+	[redirectURL release];
+	[statusTimer invalidate];
+	[statusTimer release];
 	[queue release];
 	[userInfo release];
 	[postBody release];
@@ -1930,7 +1935,6 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 }
 
-/* ALWAYS CALLED ON MAIN THREAD! */
 // Subclasses might override this method to process the result in the same thread
 // If you do this, don't forget to call [super requestFinished] to let the queue / delegate know we're done
 - (void)requestFinished
@@ -1941,18 +1945,23 @@ static NSOperationQueue *sharedQueue = nil;
 	if ([self error] || [self mainRequest]) {
 		return;
 	}
+	[self performSelectorOnMainThread:@selector(reportFinished) withObject:nil waitUntilDone:[NSThread isMainThread]];
+}
 
+/* ALWAYS CALLED ON MAIN THREAD! */
+- (void)reportFinished
+{
 	if (delegate && [delegate respondsToSelector:didFinishSelector]) {
 		[delegate performSelector:didFinishSelector withObject:self];
 	}
 	if (queue && [queue respondsToSelector:@selector(requestFinished:)]) {
 		[queue performSelector:@selector(requestFinished:) withObject:self];
 	}
-	#if NS_BLOCKS_AVAILABLE
+#if NS_BLOCKS_AVAILABLE
 	if(completionBlock){
 		completionBlock();
 	}
-	#endif
+#endif
 }
 
 /* ALWAYS CALLED ON MAIN THREAD! */
@@ -2013,9 +2022,12 @@ static NSOperationQueue *sharedQueue = nil;
 		return;
 	}
 	
+	// If we have cached data, use it and ignore the error when using ASIFallbackToCacheIfLoadFailsCachePolicy
 	if ([self downloadCache] && ([self cachePolicy] & ASIFallbackToCacheIfLoadFailsCachePolicy)) {
-		[self useDataFromCache];
-		return;
+		if ([[self downloadCache] canUseCachedDataForRequest:self]) {
+			[self useDataFromCache];
+			return;
+		}
 	}
 	
 	
@@ -2161,7 +2173,6 @@ static NSOperationQueue *sharedQueue = nil;
 			}
 
 			// Force the redirected request to rebuild the request headers (if not a 303, it will re-use old ones, and add any new ones)
-			
 			[self setRedirectURL:[[NSURL URLWithString:[responseHeaders valueForKey:@"Location"] relativeToURL:[self url]] absoluteURL]];
 			[self setNeedsRedirect:YES];
 			
@@ -3245,7 +3256,7 @@ static NSOperationQueue *sharedQueue = nil;
 		if (fileError) {
 			[self failWithError:fileError];
 		} else {
-			[self performSelectorOnMainThread:@selector(requestFinished) withObject:nil waitUntilDone:[NSThread isMainThread]];
+			[self requestFinished];
 		}
 
 		[self markAsFinished];
@@ -3344,7 +3355,7 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 
 	[theRequest updateProgressIndicators];
-	[theRequest performSelectorOnMainThread:@selector(requestFinished) withObject:nil waitUntilDone:[NSThread isMainThread]];
+	[theRequest requestFinished];
 	[theRequest markAsFinished];	
 	if ([self mainRequest]) {
 		[self markAsFinished];
